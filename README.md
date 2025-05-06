@@ -5,5 +5,5 @@ Hypixel API Wrapper for Python
 ## Installation
 
 ```bash
-pip install hy.py
+pip install hypixelv2.py
 ```

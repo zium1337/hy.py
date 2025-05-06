@@ -3,10 +3,10 @@ requires = ["setuptools>=61.3.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "hy.py"
+name = "hypixelv2.py"
 version = "0.2.0"
 authors = [
-    {name="zium1337", email="imflo7dxepij678t7z4@gmail.com"}
+    {name="zium1337", email="imflo7dxepij678t7zz4@gmail.com"}
 ]
 description = "Hypixel API Wrapper for Python"
 readme = "README.md"
