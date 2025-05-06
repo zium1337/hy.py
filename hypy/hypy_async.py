@@ -83,22 +83,57 @@ class HypyAsync:
             raise HypixelAPIError(f"An unexpected error occurred: {e}") from e
 
     async def bazzar(self) -> BazzarResponse:
+        """
+        Fetches the Bazzar data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: BazzarResponse
+        """
         return await self._make_request(endpoint="skyblock/bazzar", model=BazzarResponse, requires_auth=False)
 
     async def profile(self, profile_uuid: str) -> ProfileResponse:
+        """
+        Fetches the profile data from the Hypixel API.
+        :param profile_uuid:
+        :return: ProfileResponse
+        """
         return await self._make_request(endpoint="skyblock/profile", model=ProfileResponse, requires_auth=True, params={"profile": profile_uuid})
 
     async def profiles(self, player_uuid: str):
+        """
+        Fetches the profiles data from the Hypixel API.
+        :param player_uuid:
+        :return: ProfilesResponse
+        """
         return await self._make_request(endpoint="skyblock/profiles", model=ProfilesResponse, requires_auth=True, params={"uuid": player_uuid})
 
     async def museum(self, profile_uuid: str):
+        """
+        Fetches the museum data from the Hypixel API.
+        :param profile_uuid:
+        :return: MuseumResponse
+        """
         return await self._make_request(endpoint="skyblock/museum", model=MuseumResponse, requires_auth=True, params={"profile": profile_uuid})
 
     async def garden(self, profile_uuid: str):
+        """
+        Fetches the garden data from the Hypixel API.
+        :param profile_uuid:
+        :return: GardenResponse
+        """
         return await self._make_request(endpoint="skyblock/garden", model=GardenResponse, requires_auth=True, params={"profile": profile_uuid})
 
     async def bingo(self, player_uuid: str):
+        """
+        Fetches the bingo data from the Hypixel API.
+        :param player_uuid:
+        :return: BingoResponse
+        """
         return await self._make_request(endpoint="skyblock/bingo", model=BingoResponse, requires_auth=True, params={"uuid": player_uuid})
 
     async def firesale(self):
+        """
+        Fetches the firesale data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: FireSalesResponse
+        """
         return await self._make_request(endpoint="skyblock/firesales", model=FireSalesResponse, requires_auth=False)
