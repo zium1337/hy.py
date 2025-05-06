@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.3.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hypy"
+version = "0.1.0"
+authors = "zium1337"
+description = "Hypixel API Wrapper for Python"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "httpx>=1.0.0b0",
+    "pydantic>=2.11.4"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/zium1337/hypy"
+"Bug Tracker" = "https://github.com/zium1337/hypy/issues"
