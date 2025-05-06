@@ -10,7 +10,10 @@ from hypy.exceptions import (
     HypixelForbiddenError,
     HypixelNotFoundError,
     HypixelValidationError,
-    HypixelInvalidResponseError
+    HypixelInvalidResponseError,
+    HypixelBadRequestError,
+    HypixelUnprocessableEntityError,
+    HypixelServiceUnavailableError
 )
 from hypy.modals import (
     BazzarResponse,
@@ -43,12 +46,18 @@ class Hypy:
         current_headers = self.headers if requires_auth else None
         try:
             response = self._client.get(full_url, params=params, headers=current_headers)
+            if response.status_code == 400:
+                raise HypixelBadRequestError(response)
+            if response.status_code == 422:
+                raise HypixelUnprocessableEntityError(response)
             if response.status_code == 429:
                 raise HypixelRateLimitError(response)
             if response.status_code == 403:
                 raise HypixelForbiddenError(response)
             if response.status_code == 404:
                 raise HypixelNotFoundError(response)
+            if response.status_code == 503:
+                raise HypixelServiceUnavailableError(response)
             response.raise_for_status()
             data = response.json()
             if not data.get("success"):
@@ -74,24 +83,57 @@ class Hypy:
             raise HypixelAPIError(f"An unexpected error occurred: {e}") from e
 
     def bazzar(self) -> BazzarResponse:
+        """
+        Fetches the Bazzar data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: BazzarResponse
+        """
         return self._make_request(endpoint="skyblock/bazzar", model=BazzarResponse, requires_auth=False)
 
     def profile(self, profile_uuid: str) -> ProfileResponse:
+        """
+        Fetches the profile data from the Hypixel API.
+        :param profile_uuid:
+        :return: ProfileResponse
+        """
         return self._make_request(endpoint="skyblock/profile", model=ProfileResponse, requires_auth=True, params={"profile": profile_uuid})
 
     def profiles(self, player_uuid: str):
+        """
+        Fetches the profiles data from the Hypixel API.
+        :param player_uuid:
+        :return: ProfilesResponse
+        """
         return self._make_request(endpoint="skyblock/profiles", model=ProfilesResponse, requires_auth=True, params={"uuid": player_uuid})
 
     def museum(self, profile_uuid: str):
+        """
+        Fetches the museum data from the Hypixel API.
+        :param profile_uuid:
+        :return: MuseumResponse
+        """
         return self._make_request(endpoint="skyblock/museum", model=MuseumResponse, requires_auth=True, params={"profile": profile_uuid})
 
     def garden(self, profile_uuid: str):
+        """
+        Fetches the garden data from the Hypixel API.
+        :param profile_uuid:
+        :return: GardenResponse
+        """
         return self._make_request(endpoint="skyblock/garden", model=GardenResponse, requires_auth=True, params={"profile": profile_uuid})
 
     def bingo(self, player_uuid: str):
+        """
+        Fetches the bingo data from the Hypixel API.
+        :param player_uuid:
+        :return: BingoResponse
+        """
         return self._make_request(endpoint="skyblock/bingo", model=BingoResponse, requires_auth=True, params={"uuid": player_uuid})
 
     def firesale(self):
+        """
+        Fetches the firesale data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: FireSalesResponse
+        """
         return self._make_request(endpoint="skyblock/firesales", model=FireSalesResponse, requires_auth=False)
-
-

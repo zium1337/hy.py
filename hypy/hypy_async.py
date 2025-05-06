@@ -10,7 +10,10 @@ from hypy.exceptions import (
     HypixelForbiddenError,
     HypixelNotFoundError,
     HypixelValidationError,
-    HypixelInvalidResponseError
+    HypixelInvalidResponseError,
+    HypixelBadRequestError,
+    HypixelUnprocessableEntityError,
+    HypixelServiceUnavailableError
 )
 from hypy.modals import (
     BazzarResponse,
@@ -43,12 +46,18 @@ class HypyAsync:
         current_headers = self.headers if requires_auth else None
         try:
             response = await self._client.get(full_url, params=params, headers=current_headers)
+            if response.status_code == 400:
+                raise HypixelBadRequestError(response)
+            if response.status_code == 422:
+                raise HypixelUnprocessableEntityError(response)
             if response.status_code == 429:
                 raise HypixelRateLimitError(response)
             if response.status_code == 403:
                 raise HypixelForbiddenError(response)
             if response.status_code == 404:
                 raise HypixelNotFoundError(response)
+            if response.status_code == 503:
+                raise HypixelServiceUnavailableError(response)
             response.raise_for_status()
             data = response.json()
             if not data.get("success"):
@@ -93,5 +102,3 @@ class HypyAsync:
 
     async def firesale(self):
         return await self._make_request(endpoint="skyblock/firesales", model=FireSalesResponse, requires_auth=False)
-
-
