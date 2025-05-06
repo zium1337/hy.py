@@ -4,8 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hy.py"
-version = "0.1.0"
-authors = "zium1337"
+version = "0.2.0"
+authors = [
+    {name="zium1337", email="imflo7dxepij678t7z4@gmail.com"}
+]
 description = "Hypixel API Wrapper for Python"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -15,7 +17,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "httpx>=1.0.0b0",
+    "httpx>=0.28.1",
     "pydantic>=2.11.4"
 ]
 

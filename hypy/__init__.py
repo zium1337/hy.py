@@ -1,4 +1,5 @@
-from .client import Hypy
+from .hypy import Hypy
+from .hypy_async import HypyAsync
 from .exceptions import (
     HypixelAPIError,
     HypixelRequestError,
@@ -10,4 +11,4 @@ from .exceptions import (
     HypixelInvalidResponseError
 )
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
