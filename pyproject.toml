@@ -3,7 +3,7 @@ requires = ["setuptools>=61.3.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "hypy"
+name = "hy.py"
 version = "0.1.0"
 authors = "zium1337"
 description = "Hypixel API Wrapper for Python"
@@ -20,5 +20,5 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/zium1337/hypy"
-"Bug Tracker" = "https://github.com/zium1337/hypy/issues"
+"Homepage" = "https://github.com/zium1337/hy.py"
+"Bug Tracker" = "https://github.com/zium1337/hy.py/issues"
