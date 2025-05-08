@@ -17,14 +17,37 @@ class HypixelHTTPError(HypixelAPIError):
 
 class HypixelRateLimitError(HypixelHTTPError):
     def __init__(self, response: httpx.Response):
+        self.response = response
+        self.message = "Key throttle"
         super().__init__(response)
 
 class HypixelForbiddenError(HypixelHTTPError):
     def __init__(self, response: httpx.Response):
+        self.response = response
+        self.message = "Invalid API key"
         super().__init__(response)
 
 class HypixelNotFoundError(HypixelAPIError):
     def __init__(self, response: httpx.Response):
+        self.response = response
+        super().__init__(response)
+
+class HypixelBadRequestError(HypixelHTTPError):
+    def __init__(self, response: httpx.Response):
+        self.response = response
+        self.message = "Missing one or more fields"
+        super().__init__(response)
+
+class HypixelUnprocessableEntityError(HypixelHTTPError):
+    def __init__(self, response: httpx.Response):
+        self.response = response
+        self.message = "Malformed UUID"
+        super().__init__(response)
+
+class HypixelServiceUnavailableError(HypixelHTTPError):
+    def __init__(self, response: httpx.Response):
+        self.response = response
+        self.message = "Leaderboard data has not yet been populated"
         super().__init__(response)
 
 class HypixelValidationError(HypixelAPIError):
