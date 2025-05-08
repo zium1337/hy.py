@@ -231,14 +231,14 @@ class GardenResponse(BaseModel):
         extra = "ignore"
         validate_by_name = True
 
-# Bingo Models
+# Bingo data Models
 
 class BingoEvents(BaseModel):
     key: Optional[int] = None
     points: Optional[int] = None
     completed_goals: Optional[List[str]] = Field(default_factory=list)
 
-class BingoResponse(BaseModel):
+class BingoDataResponse(BaseModel):
     success: bool
     events: Optional[List[BingoEvents]] = Field(default_factory=list)
     class Config:
@@ -257,6 +257,216 @@ class FireSaleItem(BaseModel):
 class FireSalesResponse(BaseModel):
     success: bool
     sales: Optional[List[FireSaleItem]] = Field(default_factory=list)
+    class Config:
+        extra = "ignore"
+        validate_by_name = True
+
+# Collections Models
+
+class CollectionsTier(BaseModel):
+    tier: Optional[int] = None
+    amountRequired: Optional[int] = None
+    unlocks: Optional[List[str]] = Field(default_factory=list)
+
+class CollectionsItem(BaseModel):
+    name: Optional[str] = None
+    maxTier: Optional[int] = None
+    tiers: Optional[List[CollectionsTier]] = Field(default_factory=list)
+
+class CollectionsCategory(BaseModel):
+    name: Optional[str] = None
+    items: Optional[Dict[str, CollectionsItem]] = None
+
+class CollectionsResponse(BaseModel):
+    success: bool
+    lastUpdated: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    version: Optional[str] = None
+    collections: Optional[Dict[str, CollectionsCategory]] = None
+    class Config:
+        extra = "ignore"
+        validate_by_name = True
+
+# Skills Models
+
+class SkillsLevels(BaseModel):
+    level: Optional[int] = None
+    totalExpRequired: Optional[float] = None
+    unlocks: Optional[List[str]] = Field(default_factory=list)
+
+class SkillsCategory(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    maxLevel: Optional[int] = None
+    skills: Optional[List[SkillsLevels]] = None
+
+class SkillsResponse(BaseModel):
+    success: bool
+    lastUpdated: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    version: Optional[str] = None
+    skills: Optional[Dict[str, Any]] = None
+    class Config:
+        extra = "ignore"
+        validate_by_name = True
+
+# Items Models
+
+class ItemsDetails(BaseModel):
+    id: Optional[str] = None
+    name: Optional[str] = None
+    tier: Optional[str] = None
+    material: Optional[str] = None
+    class Config:
+        extra = "allow"
+        validate_by_name = True
+
+class ItemsResponse(BaseModel):
+    success: bool
+    lastUpdated: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    items: Optional[List[ItemsDetails]] = None
+    class Config:
+        extra = "ignore"
+        validate_by_name = True
+
+# Elections Models
+
+class MayorPerks(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    class Config:
+        extra = "allow"
+
+class CandidatesDetails(BaseModel):
+    key: Optional[str] = None
+    name: Optional[str] = None
+    perks: Optional[List[MayorPerks]] = Field(default_factory=list)
+    class Config:
+        extra = "allow"
+
+class MinisterDetails(BaseModel):
+    key: Optional[str] = None
+    name: Optional[str] = None
+    perk: Optional[MayorPerks] = None
+
+class ElectionDetails(BaseModel):
+    year: Optional[int] = None
+    candidates: Optional[List[CandidatesDetails]] = None
+
+class MayorDetails(BaseModel):
+    key: Optional[str] = None
+    name: Optional[str] = None
+    perks: Optional[List[MayorPerks]] = Field(default_factory=list)
+    minister: Optional[MinisterDetails] = None
+    election: Optional[ElectionDetails] = None
+
+class ElectionsResponse(BaseModel):
+    success: bool
+    lastUpdated: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    mayor: Optional[MayorDetails] = None
+    current: Optional[ElectionDetails] = None
+    class Config:
+        extra = "ignore"
+        validate_by_name = True
+
+# Bingo Models
+
+class BingoGoals(BaseModel):
+    id: Optional[str] = None
+    name: Optional[str] = None
+    tiers: Optional[List[int]] = Field(default_factory=list)
+    progress: Optional[int] = None
+    lore: Optional[str] = None
+    fullLore: Optional[List[str]] = None
+    class Config:
+        extra = "allow"
+
+class BingoResponse(BaseModel):
+    success: bool
+    lastUpdated: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    id: Optional[int] = None
+    name: Optional[str] = None
+    start: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    end: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    modifier: Optional[str] = None
+    goals: Optional[List[BingoGoals]] = None
+
+# News Models
+
+class NewsDetails(BaseModel):
+    item: Optional[Dict[str, Any]] = None
+    link: Optional[str] = None
+    title: Optional[str] = None
+    text: Optional[str] = None
+
+class NewsResponse(BaseModel):
+    success: bool
+    items: Optional[List[NewsDetails]] = None
+    class Config:
+        extra = "ignore"
+        validate_by_name = True
+
+# Request Auctions Models
+
+class RequestAuctionsBids(BaseModel):
+    auction_id: Optional[str] = None
+    bidder: Optional[str] = None
+    profile_id: Optional[str] = None
+    amount: Optional[int] = None
+    time: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)] = Field(alias="timestamp")
+
+class AuctionsDetails(BaseModel):
+    uuid: Optional[str] = None
+    auctioneer: Optional[str] = None
+    profile_id: Optional[str] = None
+    coop: Optional[List[str]] = Field(default_factory=list)
+    start: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    end: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    item_name: Optional[str] = None
+    item_lore: Optional[str] = None
+    extra: Optional[str] = None
+    tier: Optional[str] = None
+    starting_bid: Optional[int] = None
+    claimed: Optional[bool] = None
+    claimed_bidders: Optional[List[str]] = Field(default_factory=list)
+    highest_bid_amount: Optional[int] = None
+    bids: Optional[List[RequestAuctionsBids]] = Field(default_factory=list)
+
+class RequestAuctionsResponse(BaseModel):
+    success: bool
+    auctions: Optional[List[AuctionsDetails]] = None
+    class Config:
+        extra = "ignore"
+        validate_by_name = True
+
+# Active Auctions Models
+
+class ActiveAuctionsResponse(BaseModel):
+    success: bool
+    page: Optional[int] = None
+    total_pages: Optional[int] = None
+    totalAuctions: Optional[int] = None
+    lastUpdated: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    auctions: Optional[List[AuctionsDetails]] = None
+    class Config:
+        extra = "ignore"
+        validate_by_name = True
+
+# Recently Ended Auctions Models
+
+class RecentlyAuctionsDetails(BaseModel):
+    auction_id: Optional[str] = None
+    seller: Optional[str] = None
+    seller_profile: Optional[str] = None
+    buyer: Optional[str] = None
+    buyer_profile: Optional[str] = None
+    time: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)] = Field(alias="timestamp")
+    price: Optional[int] = None
+    bin: Optional[bool] = None
+    item_bytes: Optional[str] = None
+
+class RecentlyEndedAuctionsResponse(BaseModel):
+    success: bool
+    lastUpdated: Annotated[Optional[str], BeforeValidator(timestamp_to_datetime)]
+    auctions: Optional[List[RecentlyAuctionsDetails]] = None
     class Config:
         extra = "ignore"
         validate_by_name = True
