@@ -105,7 +105,7 @@ async def test_bazzar(api_client: HypyAsync, respx_router: MockRouter):
     assert bazzar_response.success is True
     assert bazzar_response.last_updated == 1590854517479
     assert "INK_SACK:3" in bazzar_response.products
-    assert bazzar_response.products["INK_SACK:3"].quick_status.sellPrice == 4.2
+    assert bazzar_response.products["INK_SACK:3"].quick_status.sell_price == 4.2
 
 @pytest.mark.asyncio
 async def test_profile_api_failure(api_client: HypyAsync, respx_router: MockRouter):
