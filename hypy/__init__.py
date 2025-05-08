@@ -8,7 +8,10 @@ from .exceptions import (
     HypixelForbiddenError,
     HypixelNotFoundError,
     HypixelValidationError,
-    HypixelInvalidResponseError
+    HypixelInvalidResponseError,
+    HypixelBadRequestError,
+    HypixelUnprocessableEntityError,
+    HypixelServiceUnavailableError
 )
 from .modals import (
     BazzarResponse,
