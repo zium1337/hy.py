@@ -10,5 +10,23 @@ from .exceptions import (
     HypixelValidationError,
     HypixelInvalidResponseError
 )
+from .modals import (
+    BazzarResponse,
+    ProfileResponse,
+    ProfilesResponse,
+    MuseumResponse,
+    GardenResponse,
+    BingoDataResponse,
+    FireSalesResponse,
+    CollectionsResponse,
+    SkillsResponse,
+    ItemsResponse,
+    ElectionsResponse,
+    BingoResponse,
+    NewsResponse,
+    RequestAuctionsResponse,
+    ActiveAuctionsResponse,
+    RecentlyEndedAuctionsResponse
+)
 
 __version__ = "0.2.0"
