@@ -42,7 +42,7 @@ class HypyAsync:
         if not api_key:
             raise ValueError("API key is required")
         self.api_key = api_key
-        self._client = httpx.AsyncClient(headers={"Api-Key": self.api_key})
+        self._client = httpx.AsyncClient(headers={"API-Key": self.api_key})
         self.headers = {
             "API-Key": self.api_key
         }
@@ -93,15 +93,27 @@ class HypyAsync:
 
     async def bazzar(self) -> BazzarResponse:
         """
-        Fetches the Bazzar data from the Hypixel API.\n
-        **Doesn't require an API key.**
+        Returns the list of products along with their sell summary, buy summary and quick status.\n
+        **Product Description**\n
+        The returned product info has 3 main fields:\n
+        * ``buy_summary``
+        * ``sell_summary``
+        * ``quick_status``
+        ``buy_summary`` and ``sell_summary`` are the current top 30 orders for each transaction type (in-game example: Stock of Stonks).\n
+        ``quick_status`` is a computed summary of the live state of the product (used for advanced mode view in the bazaar):\n
+        * ``sellVolume`` and ``buyVolume`` are the sum of item amounts in all orders.\n
+            * ``sellPrice`` and ``buyPrice`` are the weighted average of the top 2% of orders by volume.
+            * ``movingWeek`` is the historic transacted volume from last 7d + live state.
+            * ``sellOrders`` and ``buyOrders`` are the count of active orders.\n
+        **Doesn't require an API key.**\n
+        See More: `Hypixel API Documentation <https://api.hypixel.net/#tag/SkyBlock/paths/~1v2~1skyblock~1bazaar/get>`_
         :return: BazzarResponse
         """
         return await self._make_request(endpoint="skyblock/bazzar", model=BazzarResponse, requires_auth=False)
 
     async def profile(self, profile_uuid: str) -> ProfileResponse:
         """
-        Fetches the profile data from the Hypixel API.
+        SkyBlock profile data, such as stats, objectives etc. The data returned can differ depending on the players in-game API settings.
         :param profile_uuid:
         :return: ProfileResponse
         """
@@ -109,7 +121,7 @@ class HypyAsync:
 
     async def profiles(self, player_uuid: str):
         """
-        Fetches the profiles data from the Hypixel API.
+        SkyBlock profile data, such as stats, objectives etc. The data returned can differ depending on the players in-game API settings.
         :param player_uuid:
         :return: ProfilesResponse
         """
@@ -117,7 +129,7 @@ class HypyAsync:
 
     async def museum(self, profile_uuid: str):
         """
-        Fetches the museum data from the Hypixel API.
+        SkyBlock museum data for all members of the provided profile. The data returned can differ depending on the players in-game API settings.
         :param profile_uuid:
         :return: MuseumResponse
         """
@@ -125,7 +137,7 @@ class HypyAsync:
 
     async def garden(self, profile_uuid: str):
         """
-        Fetches the garden data from the Hypixel API.
+        SkyBlock garden data for the provided profile.
         :param profile_uuid:
         :return: GardenResponse
         """
@@ -133,7 +145,7 @@ class HypyAsync:
 
     async def bingo_data(self, player_uuid: str):
         """
-        Fetches the bingo data from the Hypixel API.
+        Bingo data for participated events of the provided player.
         :param player_uuid:
         :return: BingoDataResponse
         """
@@ -141,7 +153,7 @@ class HypyAsync:
 
     async def firesale(self):
         """
-        Fetches the firesale data from the Hypixel API.\n
+        Retrieve the currently active or upcoming Fire Sales for SkyBlock.\n
         **Doesn't require an API key.**
         :return: FireSalesResponse
         """
@@ -149,7 +161,7 @@ class HypyAsync:
 
     async def collections(self):
         """
-        Fetches the collections data from the Hypixel API.\n
+        Information regarding Collections in the SkyBlock game.\n
         **Doesn't require an API key.**
         :return: CollectionsResponse
         """
@@ -157,7 +169,7 @@ class HypyAsync:
 
     async def skills(self):
         """
-        Fetches the skills data from the Hypixel API.\n
+        Information regarding skills in the SkyBlock game.\n
         **Doesn't require an API key.**
         :return: SkillsResponse
         """
@@ -165,7 +177,7 @@ class HypyAsync:
 
     async def items(self):
         """
-        Fetches the items data from the Hypixel API.\n
+        Information regarding items in the SkyBlock game.\n
         **Doesn't require an API key.**
         :return: ItemsResponse
         """
@@ -173,15 +185,15 @@ class HypyAsync:
 
     async def elections(self):
         """
-        Fetches the election data from the Hypixel API.\n
+        Information regarding the current mayor and ongoing election in SkyBlock.\n
         **Doesn't require an API key.**
-        :return: ElectionResponse
+        :return: ElectionsResponse
         """
         return await self._make_request(endpoint="resources/skyblock/election", model=ElectionsResponse, requires_auth=False)
 
     async def bingo(self):
         """
-        Fetches the bingo data from the Hypixel API.\n
+        Information regarding the current bingo event and its goals.\n
         **Doesn't require an API key.**
         :return: BingoResponse
         """
@@ -202,11 +214,18 @@ class HypyAsync:
         :param auction_uuid: Auction UUID
         :return: RequestAuctionsResponse
         """
+        params = {}
+        if player_uuid:
+            params["player"] = player_uuid
+        if profile_uuid:
+            params["profile"] = profile_uuid
+        if auction_uuid:
+            params["uuid"] = auction_uuid
         return await self._make_request(endpoint="skyblock/auction", model=RequestAuctionsResponse, requires_auth=True, params={"uuid": auction_uuid, "profile": profile_uuid, "player": player_uuid})
 
     async def active_auctions(self, page: int = 0):
         """
-        Returns the active auctions for a specific player and profile.
+        Returns the currently active auctions sorted by last updated first and paginated.
         **Doesn't require an API key.**
         :param page: Page number for pagination (default is 0).
         :return: ActiveAuctionsResponse
@@ -215,7 +234,7 @@ class HypyAsync:
 
     async def recently_ended_auction(self):
         """
-        Returns the recently ended auctions for a specific player and profile.
+        SkyBlock auctions which ended in the last 60 seconds.
         **Doesn't require an API key.**
         :return: RecentlyEndedAuctionResponse
         """
