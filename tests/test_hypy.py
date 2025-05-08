@@ -1,4 +1,5 @@
 import pytest
+import pytest_asyncio
 from respx import MockRouter
 
 from hypy import (
@@ -35,7 +36,7 @@ from hypy.modals import (
 
 URL = "https://api.hypixel.net/v2/"
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def api_client():
     client = HypyAsync(api_key="1234567890abcdefghijklmnopstuvwxyz")
     yield client
@@ -104,7 +105,7 @@ async def test_bazzar(api_client: HypyAsync, respx_router: MockRouter):
     assert bazzar_response.success is True
     assert bazzar_response.last_updated == 1590854517479
     assert "INK_SACK:3" in bazzar_response.products
-    assert bazzar_response.products["INK_SACK:3"].quick_status.sellPrice == "4.2"
+    assert bazzar_response.products["INK_SACK:3"].quick_status.sellPrice == 4.2
 
 @pytest.mark.asyncio
 async def test_profile_api_failure(api_client: HypyAsync, respx_router: MockRouter):
@@ -113,7 +114,7 @@ async def test_profile_api_failure(api_client: HypyAsync, respx_router: MockRout
         "success": False,
         "cause": "Malformed UUID"
     }
-    respx_router.get(f"f{URL}skyblock/profile?profile={profile_uuid}").respond(status_code=422, json=mock_failure_response)
+    respx_router.get(f"{URL}skyblock/profile?profile={profile_uuid}").respond(status_code=422, json=mock_failure_response)
     with pytest.raises(HypixelUnprocessableEntityError, match="Malformed UUID"):
         await api_client.profile(profile_uuid=profile_uuid)
 
