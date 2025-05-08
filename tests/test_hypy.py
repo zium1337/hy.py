@@ -98,7 +98,7 @@ async def test_bazzar(api_client: HypyAsync, respx_router: MockRouter):
         }
       }
     }
-    respx_router.get(f"{api_client.URL}skyblock/bazzar").respond(status_code=200, json=mock_bazzar_data)
+    respx_router.get(f"{URL}skyblock/bazzar").respond(status_code=200, json=mock_bazzar_data)
     bazzar_response = await api_client.bazzar()
     assert isinstance(bazzar_response, BazzarResponse)
     assert bazzar_response.success is True
@@ -113,7 +113,7 @@ async def test_profile_api_failure(api_client: HypyAsync, respx_router: MockRout
         "success": False,
         "cause": "Malformed UUID"
     }
-    respx_router.get(f"f{api_client.URL}skyblock/profile?profile={profile_uuid}").respond(status_code=422, json=mock_failure_response)
+    respx_router.get(f"f{URL}skyblock/profile?profile={profile_uuid}").respond(status_code=422, json=mock_failure_response)
     with pytest.raises(HypixelUnprocessableEntityError, match="Malformed UUID"):
         await api_client.profile(profile_uuid=profile_uuid)
 
@@ -124,7 +124,7 @@ async def test_profile_forbidden(api_client: HypyAsync, respx_router: MockRouter
         "success": False,
         "cause": "Invalid API key"
     }
-    respx_router.get(f"{api_client.URL}skyblock/profile?profile={profile_uuid}").respond(status_code=403, text="Invalid API key")
+    respx_router.get(f"{URL}skyblock/profile?profile={profile_uuid}").respond(status_code=403, text="Invalid API key")
     with pytest.raises(HypixelForbiddenError, match="Invalid API key"):
         await api_client.profile(profile_uuid=profile_uuid)
 
@@ -134,7 +134,7 @@ async def test_bazzar_validation_error(api_client: HypyAsync, respx_router: Mock
         "success": True,
         "lastUpdated": 1590854517479
     }
-    respx_router.get(f"{api_client.URL}skyblock/bazzar").respond(status_code=200, json=invalid_bazzar_data)
+    respx_router.get(f"{URL}skyblock/bazzar").respond(status_code=200, json=invalid_bazzar_data)
     with pytest.raises(HypixelValidationError) as excinfo:
         await api_client.bazzar()
     assert "BazzarResponse" in str(excinfo.value)
