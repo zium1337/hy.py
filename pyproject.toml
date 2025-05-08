@@ -24,3 +24,10 @@ dependencies = [
 [project.urls]
 "Homepage" = "https://github.com/zium1337/hy.py"
 "Bug Tracker" = "https://github.com/zium1337/hy.py/issues"
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.21.0",
+    "respx>=0.22.0"
+]
