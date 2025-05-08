@@ -18,8 +18,8 @@ class HypixelHTTPError(HypixelAPIError):
 class HypixelRateLimitError(HypixelHTTPError):
     def __init__(self, response: httpx.Response):
         self.response = response
-        super().__init__(response)
         self.message = "Key throttle"
+        super().__init__(response)
 
 class HypixelForbiddenError(HypixelHTTPError):
     def __init__(self, response: httpx.Response):

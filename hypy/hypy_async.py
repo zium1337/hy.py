@@ -21,8 +21,17 @@ from hypy.modals import (
     ProfilesResponse,
     MuseumResponse,
     GardenResponse,
+    BingoDataResponse,
+    FireSalesResponse,
+    CollectionsResponse,
+    SkillsResponse,
+    ItemsResponse,
+    ElectionsResponse,
     BingoResponse,
-    FireSalesResponse
+    NewsResponse,
+    RequestAuctionsResponse,
+    ActiveAuctionsResponse,
+    RecentlyEndedAuctionsResponse
 )
 
 T = TypeVar('T', bound=BaseModel)
@@ -122,13 +131,13 @@ class HypyAsync:
         """
         return await self._make_request(endpoint="skyblock/garden", model=GardenResponse, requires_auth=True, params={"profile": profile_uuid})
 
-    async def bingo(self, player_uuid: str):
+    async def bingo_data(self, player_uuid: str):
         """
         Fetches the bingo data from the Hypixel API.
         :param player_uuid:
-        :return: BingoResponse
+        :return: BingoDataResponse
         """
-        return await self._make_request(endpoint="skyblock/bingo", model=BingoResponse, requires_auth=True, params={"uuid": player_uuid})
+        return await self._make_request(endpoint="skyblock/bingo", model=BingoDataResponse, requires_auth=True, params={"uuid": player_uuid})
 
     async def firesale(self):
         """
@@ -137,3 +146,77 @@ class HypyAsync:
         :return: FireSalesResponse
         """
         return await self._make_request(endpoint="skyblock/firesales", model=FireSalesResponse, requires_auth=False)
+
+    async def collections(self):
+        """
+        Fetches the collections data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: CollectionsResponse
+        """
+        return await self._make_request(endpoint="resources/skyblock/collections", model=CollectionsResponse, requires_auth=False)
+
+    async def skills(self):
+        """
+        Fetches the skills data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: SkillsResponse
+        """
+        return await self._make_request(endpoint="resources/skyblock/skills", model=SkillsResponse, requires_auth=False)
+
+    async def items(self):
+        """
+        Fetches the items data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: ItemsResponse
+        """
+        return await self._make_request(endpoint="resources/skyblock/items", model=ItemsResponse, requires_auth=False)
+
+    async def elections(self):
+        """
+        Fetches the election data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: ElectionResponse
+        """
+        return await self._make_request(endpoint="resources/skyblock/election", model=ElectionsResponse, requires_auth=False)
+
+    async def bingo(self):
+        """
+        Fetches the bingo data from the Hypixel API.\n
+        **Doesn't require an API key.**
+        :return: BingoResponse
+        """
+        return await self._make_request(endpoint="resources/skyblock/bingo", model=BingoResponse, requires_auth=False)
+
+    async def news(self):
+        """
+        Fetches the news data from the Hypixel API.\n
+        :return: NewsResponse
+        """
+        return await self._make_request(endpoint="skyblock/news", model=NewsResponse, requires_auth=True)
+
+    async def request_auctions(self, player_uuid: str, profile_uuid: str, auction_uuid: str):
+        """
+        Returns the auctions selected by the provided query. Only one query parameter can be used in a single request, and cannot be filtered by multiple.
+        :param player_uuid: User UUID
+        :param profile_uuid: Skyblock Profile UUID
+        :param auction_uuid: Auction UUID
+        :return: RequestAuctionsResponse
+        """
+        return await self._make_request(endpoint="skyblock/auction", model=RequestAuctionsResponse, requires_auth=True, params={"uuid": auction_uuid, "profile": profile_uuid, "player": player_uuid})
+
+    async def active_auctions(self, page: int = 0):
+        """
+        Returns the active auctions for a specific player and profile.
+        **Doesn't require an API key.**
+        :param page: Page number for pagination (default is 0).
+        :return: ActiveAuctionsResponse
+        """
+        return await self._make_request(endpoint="skyblock/auctions", model=ActiveAuctionsResponse, requires_auth=False, params={"page": page})
+
+    async def recently_ended_auction(self):
+        """
+        Returns the recently ended auctions for a specific player and profile.
+        **Doesn't require an API key.**
+        :return: RecentlyEndedAuctionResponse
+        """
+        return await self._make_request(endpoint="skyblock/auctions_ended", model=RecentlyEndedAuctionsResponse, requires_auth=False)
