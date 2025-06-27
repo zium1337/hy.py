@@ -1,5 +1,5 @@
-import pytest
 import pytest_asyncio
+import pytest
 from respx import MockRouter
 
 from hypy import (
@@ -16,7 +16,7 @@ from hypy import (
 )
 
 from hypy.modals import (
-    BazzarResponse,
+    BazaarResponse,
     ProfileResponse,
     ProfilesResponse,
     MuseumResponse,
@@ -100,12 +100,12 @@ async def test_bazzar(api_client: HypyAsync, respx_router: MockRouter):
       }
     }
     respx_router.get(f"{URL}skyblock/bazzar").respond(status_code=200, json=mock_bazzar_data)
-    bazzar_response = await api_client.bazzar()
-    assert isinstance(bazzar_response, BazzarResponse)
+    bazzar_response = await api_client.bazaar()
+    assert isinstance(bazzar_response, BazaarResponse)
     assert bazzar_response.success is True
     assert bazzar_response.last_updated == 1590854517479
     assert "INK_SACK:3" in bazzar_response.products
-    assert bazzar_response.products["INK_SACK:3"].quick_status.sell_price == 4.2
+    assert bazzar_response.products["INK_SACK:3"].quick_status.sellPrice == 4.2
 
 @pytest.mark.asyncio
 async def test_profile_api_failure(api_client: HypyAsync, respx_router: MockRouter):
@@ -137,6 +137,6 @@ async def test_bazzar_validation_error(api_client: HypyAsync, respx_router: Mock
     }
     respx_router.get(f"{URL}skyblock/bazzar").respond(status_code=200, json=invalid_bazzar_data)
     with pytest.raises(HypixelValidationError) as excinfo:
-        await api_client.bazzar()
+        await api_client.bazaar()
     assert "BazzarResponse" in str(excinfo.value)
     
