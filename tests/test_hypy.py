@@ -49,7 +49,7 @@ def respx_router():
         yield router
 
 @pytest.mark.asyncio
-async def test_bazzar(api_client: HypyAsync, respx_router: MockRouter):
+async def test_bazaar(api_client: HypyAsync, respx_router: MockRouter):
     mock_bazaar_data = {
       "success": True,
       "lastUpdated": 1590854517479,
@@ -130,12 +130,12 @@ async def test_profile_forbidden(api_client: HypyAsync, respx_router: MockRouter
         await api_client.profile(profile_uuid=profile_uuid)
 
 @pytest.mark.asyncio
-async def test_bazzar_validation_error(api_client: HypyAsync, respx_router: MockRouter):
-    invalid_bazzar_data = {
+async def test_bazaar_validation_error(api_client: HypyAsync, respx_router: MockRouter):
+    invalid_bazaar_data = {
         "success": True,
         "lastUpdated": 1590854517479
     }
-    respx_router.get(f"{URL}skyblock/bazaar").respond(status_code=200, json=invalid_bazzar_data)
+    respx_router.get(f"{URL}skyblock/bazaar").respond(status_code=200, json=invalid_bazaar_data)
     with pytest.raises(HypixelValidationError) as excinfo:
         await api_client.bazaar()
     assert "BazaarResponse" in str(excinfo.value)
