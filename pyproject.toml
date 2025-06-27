@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hypixelv2.py"
-version = "0.2.0"
+version = "0.3.0"
 authors = [
     {name="zium1337", email="imflo7dxepij678t7zz4@gmail.com"}
 ]
 description = "Hypixel API Wrapper for Python"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]

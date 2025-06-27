@@ -13,7 +13,7 @@ def timestamp_to_datetime(timestamp: Optional[int]) -> Optional[str]:
     except (ValueError, OSError) as e:
         raise ValueError(f"Invalid timestamp: {timestamp}") from e
 
-# Bazzar Modals
+# Bazaar Modals
 
 class SummaryOrder(BaseModel):
     amount: int
@@ -37,7 +37,7 @@ class QuickStatus(BaseModel):
         extra = "ignore"
         validate_by_name = True
 
-class BazzarProduct(BaseModel):
+class BazaarProduct(BaseModel):
     product_id: str
     sell_summary: List[SummaryOrder] = Field(default_factory=list)
     buy_summary: List[SummaryOrder] = Field(default_factory=list)
@@ -46,10 +46,10 @@ class BazzarProduct(BaseModel):
         extra = "ignore"
         validate_by_name = True
 
-class BazzarResponse(BaseModel):
+class BazaarResponse(BaseModel):
     success: bool
     last_updated: int = Field(alias="lastUpdated")
-    products: Dict[str, BazzarProduct]
+    products: Dict[str, BazaarProduct]
     class Config:
         extra = "ignore"
         validate_by_name = True
@@ -98,7 +98,6 @@ class MembersDetails(BaseModel):
     trophy_fish: Optional[Dict[str, Any]] = None
     objectives: Optional[Dict[str, Any]] = None
     slayer: Optional[Dict[str, Any]] = None
-    # Reszta pól
     currencies: Optional[Currencies] = None
     profile: Optional[Dict[str, Any]] = None
     player_id: Optional[str] = None

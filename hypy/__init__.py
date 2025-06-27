@@ -14,7 +14,7 @@ from .exceptions import (
     HypixelServiceUnavailableError
 )
 from .modals import (
-    BazzarResponse,
+    BazaarResponse,
     ProfileResponse,
     ProfilesResponse,
     MuseumResponse,
@@ -32,4 +32,4 @@ from .modals import (
     RecentlyEndedAuctionsResponse
 )
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

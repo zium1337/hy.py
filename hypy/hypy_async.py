@@ -16,7 +16,7 @@ from hypy.exceptions import (
     HypixelServiceUnavailableError
 )
 from hypy.modals import (
-    BazzarResponse,
+    BazaarResponse,
     ProfileResponse,
     ProfilesResponse,
     MuseumResponse,
@@ -91,7 +91,7 @@ class HypyAsync:
         except Exception as e:
             raise HypixelAPIError(f"An unexpected error occurred: {e}") from e
 
-    async def bazzar(self) -> BazzarResponse:
+    async def bazaar(self) -> BazaarResponse:
         """
         Returns the list of products along with their sell summary, buy summary and quick status.\n
         **Product Description**\n
@@ -107,9 +107,9 @@ class HypyAsync:
             * ``sellOrders`` and ``buyOrders`` are the count of active orders.\n
         **Doesn't require an API key.**\n
         See More: `Hypixel API Documentation <https://api.hypixel.net/#tag/SkyBlock/paths/~1v2~1skyblock~1bazaar/get>`_
-        :return: BazzarResponse
+        :return: BazaarResponse
         """
-        return await self._make_request(endpoint="skyblock/bazzar", model=BazzarResponse, requires_auth=False)
+        return await self._make_request(endpoint="skyblock/bazaar", model=BazaarResponse, requires_auth=False)
 
     async def profile(self, profile_uuid: str) -> ProfileResponse:
         """
